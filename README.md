@@ -34,7 +34,6 @@ This document provides a comprehensive, ground-up guide to RISC-V architecture, 
 10. [Featured Systems Project 1: The Caesar Cipher In-Place Stream Engine](#10-featured-systems-project-1-the-caesar-cipher-in-place-stream-engine)
 11. [Featured Systems Project 2: High-Precision Multi-Operation Calculator](#11-featured-systems-project-2-high-precision-multi-operation-calculator)
 12. [Toolchains, Emulation & Debugging Workflows](#12-toolchains-emulation--debugging-workflows)
-13. [Interview & Oral Examination Comprehensive Prep Guide](#13-interview--oral-examination-comprehensive-prep-guide)
 
 ---
 
