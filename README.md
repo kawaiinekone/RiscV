@@ -492,6 +492,7 @@ div_by_zero_error:
     li   a2, 1                  # Assert error flag
     ret
 ---
+---
 
 ## 12. Toolchains, Emulation & Debugging Workflows
 
