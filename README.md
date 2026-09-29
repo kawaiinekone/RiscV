@@ -351,44 +351,46 @@ This project implements a multi-operation calculator that evaluates expressions,
 # Demonstrates: ALU arithmetic, branching tables, error handling, syscalls
 # ==============================================================================
 
+# ==============================================================================
+# RISC-V RV32IM Reference Implementation: Arithmetic Calculator
+# Target: Venus RISC-V Simulator
+# ==============================================================================
+
 .data
 val_a:          .word   120
 val_b:          .word   15
 op_choice:      .byte   42      # ASCII: '+'=43, '-'=45, '*'=42, '/'=47
 
-str_header:     .string "--- RISC-V Compute Engine Result ---
-"
-str_ans:        .string "Computed Result: "
-str_rem:        .string "
-Remainder:       "
-str_div_err:    .string "
-Error: Hardware Division By Zero Aborted!
-"
-newline:        .string "
-"
+str_header:     .asciiz "--- RISC-V Compute Engine Result ---\n"
+str_ans:        .asciiz "Computed Result: "
+str_rem:        .asciiz "\nRemainder:       "
+str_div_err:    .asciiz "\nError: Hardware Division By Zero Aborted!\n"
+newline:        .asciiz "\n"
 
 .text
 .globl main
 
 main:
-    addi sp, sp, -16
-    sw   ra, 12(sp)
-    sw   s0, 8(sp)
+    addi sp, sp, -24
+    sw   ra, 20(sp)
+    sw   s0, 16(sp)
+    sw   s1, 12(sp)
+    sw   s2, 8(sp)
 
-    # Print Header
+    # Print Header (ecall 4: print string)
     li   a0, 4
     la   a1, str_header
     ecall
 
     # Load Operands into Argument Registers
-    lw   a0, val_a           # a0 = operand 1
-    lw   a1, val_b           # a1 = operand 2
-    lb   a2, op_choice       # a2 = operator ASCII code
+    lw   a0, val_a              # a0 = operand 1
+    lw   a1, val_b              # a1 = operand 2
+    lb   a2, op_choice          # a2 = operator ASCII code
 
     jal  ra, execute_calculation
-    mv   s0, a0              # s0 = primary result
-    mv   s1, a1              # s1 = remainder (if division)
-    mv   s2, a2              # s2 = error flag (1 if error, 0 if clean)
+    mv   s0, a0                 # s0 = primary result
+    mv   s1, a1                 # s1 = remainder (if division)
+    mv   s2, a2                 # s2 = error flag (1 if error, 0 if clean)
 
     # Verify if calculation returned an error
     bnez s2, handle_calc_error
@@ -398,13 +400,13 @@ main:
     la   a1, str_ans
     ecall
 
-    li   a0, 1               # Syscall 1: Print Integer
+    li   a0, 1                  # Syscall 1: Print Integer
     mv   a1, s0
     ecall
 
     # Check if division operation returned a remainder
     lb   t0, op_choice
-    li   t1, 47              # ASCII '/'
+    li   t1, 47                 # ASCII '/'
     bne  t0, t1, finish_execution
 
     li   a0, 4
@@ -426,9 +428,14 @@ finish_execution:
     la   a1, newline
     ecall
 
-    lw   s0, 8(sp)
-    lw   ra, 12(sp)
-    addi sp, sp, 16
+    # Restore stack frame
+    lw   s2, 8(sp)
+    lw   s1, 12(sp)
+    lw   s0, 16(sp)
+    lw   ra, 20(sp)
+    addi sp, sp, 24
+
+    # Exit program (ecall 10: exit)
     li   a0, 10
     ecall
 
@@ -437,13 +444,13 @@ finish_execution:
 # Outputs: a0 = result, a1 = remainder, a2 = error status (0=OK, 1=FAIL)
 # ------------------------------------------------------------------------------
 execute_calculation:
-    li   t0, 43              # '+'
+    li   t0, 43                 # '+'
     beq  a2, t0, do_add
-    li   t0, 45              # '-'
+    li   t0, 45                 # '-'
     beq  a2, t0, do_sub
-    li   t0, 42              # '*'
+    li   t0, 42                 # '*'
     beq  a2, t0, do_mul
-    li   t0, 47              # '/'
+    li   t0, 47                 # '/'
     beq  a2, t0, do_div
 
     # Unknown operator: Return error
@@ -465,16 +472,15 @@ do_sub:
     ret
 
 do_mul:
-    mul  a0, a0, a1          # Requires 'M' extension
+    mul  a0, a0, a1             # RV32M instruction
     li   a1, 0
     li   a2, 0
     ret
 
 do_div:
-    # Test for division by zero
-    beqz a1, div_by_zero_error
-    div  t0, a0, a1          # Requires 'M' extension
-    rem  t1, a0, a1          # Requires 'M' extension
+    beqz a1, div_by_zero_error  # Test for division by zero
+    div  t0, a0, a1             # RV32M instruction
+    rem  t1, a0, a1             # RV32M instruction
     mv   a0, t0
     mv   a1, t1
     li   a2, 0
@@ -483,10 +489,8 @@ do_div:
 div_by_zero_error:
     li   a0, 0
     li   a1, 0
-    li   a2, 1               # Assert error flag
+    li   a2, 1                  # Assert error flag
     ret
-```
-
 ---
 
 ## 12. Toolchains, Emulation & Debugging Workflows
