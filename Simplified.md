@@ -452,6 +452,8 @@ div_by_zero_error:
 ```
 
 (Verified on Venus: 120 * 15 = 1800.)
+Output Screenshot
+<img width="1920" height="1080" alt="Screenshot from 2026-09-29 11-47-28" src="https://github.com/user-attachments/assets/061d0291-92a7-4628-9c24-886412cc25e4" />
 
 ---
 
