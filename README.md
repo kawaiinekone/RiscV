@@ -31,9 +31,8 @@ This document provides a comprehensive, ground-up guide to RISC-V architecture, 
 7. [Calling Conventions, Activation Frames & Stack Mechanics](#7-calling-conventions-activation-frames--stack-mechanics)
 8. [Processor Pipelines, Hazards & Execution Models](#8-processor-pipelines-hazards--execution-models)
 9. [Standard Modular Extensions (M, A, F, D, C, V)](#9-standard-modular-extensions-m-a-f-d-c-v)
-10. [Featured Systems Project 1: The Caesar Cipher In-Place Stream Engine](#10-featured-systems-project-1-the-caesar-cipher-in-place-stream-engine)
-11. [Featured Systems Project 2: High-Precision Multi-Operation Calculator](#11-featured-systems-project-2-high-precision-multi-operation-calculator)
-12. [Toolchains, Emulation & Debugging Workflows](#12-toolchains-emulation--debugging-workflows)
+10. [Featured Systems Project 1: High-Precision Multi-Operation Calculator](#11-featured-systems-project-2-high-precision-multi-operation-calculator)
+11. [Toolchains, Emulation & Debugging Workflows](#12-toolchains-emulation--debugging-workflows)
 
 ---
 
