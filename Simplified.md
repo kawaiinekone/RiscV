@@ -314,11 +314,7 @@ G	General	Shorthand for I + M + A + F + D (+ Zicsr + Zifencei)
 
 ---
 
-10. Project 1: Caesar Cipher (in-place stream engine)
-
-(Content: an in-place Caesar cipher implementation — shifts each letter of a string by a fixed key while streaming through memory. Demonstrates byte loads/stores (`lb`/`sb`), loops, and pointer arithmetic in assembly.)
-
-11. Project 2: Multi-Operation Calculator
+10. Project 1: Multi-Operation Calculator
 
 A calculator that reads an operator (`+ - * /`) and two integers, computes the result, and checks for division by zero in software before dividing.
 
